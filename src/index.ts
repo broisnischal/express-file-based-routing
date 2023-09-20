@@ -9,17 +9,18 @@ const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const app = express();
 
 const routesdir = __dirname + "routes";
-let requestCount = 0;
+// let requestCount = 0;
 
 /**
  * you can use the global middlewares
  * app.use();
  */
+app.use(express.json())
 
-app.use((req, res, next) => {
-  requestCount++;
-  next();
-});
+// app.use((req, res, next) => {
+//   requestCount++;
+//   next();
+// });
 
 app.use(
   "/",
@@ -28,10 +29,16 @@ app.use(
   })
 );
 
+app.use("*", (req, res) => {
+  return res.status(404).json({
+    message: "Not Found",
+  })
+})
+
 app.listen(3000, () => {
   console.log("Listening on port 3000");
 });
 
-setInterval(() => {
-  logUpdate(`Request count: ${requestCount}`);
-}, 100);
+// setInterval(() => {
+//   logUpdate(`Request count: ${requestCount}`);
+// }, 100);
